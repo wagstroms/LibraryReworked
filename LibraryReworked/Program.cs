@@ -31,7 +31,7 @@ namespace LibraryReworked
 
                 Book book = new Book();
                 Output output = new Output();
-                
+
                 switch (choice)
                 {
                     case "1":
@@ -42,15 +42,25 @@ namespace LibraryReworked
                         break;
                     case "3":
                         book.SearchBooks();
+                        output.PrintSearched(searchResults);
+                        Console.WriteLine("\nKlicka vart som helst för att återgå till huvudmenyn!");
+                        Console.ReadKey();
                         break;
                     case "4":
                         output.PrintLoaned(loanedBooks);
+                        Console.WriteLine("\nKlicka vart som helst för att återgå till huvudmenyn!");
+                        Console.ReadKey();
                         break;
                     case "5":
                         output.PrintBooks(bookList);
+                        Console.WriteLine("\nKlicka vart som helst för att återgå till huvudmenyn!");
+                        Console.ReadKey();
                         break;
                     case "6":
                         Environment.Exit(0);
+                        break;
+                    case "7":
+                        book.EditBook();
                         break;
                     default:
                         Console.WriteLine("Felaktig inmatning, försök igen!");
@@ -59,5 +69,38 @@ namespace LibraryReworked
 
             }
         }
+        void SaveLoaned()
+            {
+
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Simon\Documents\VISUAL STUDIO\FotbollsTestREWORKED\Library\Library\loaneddata.json"))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, loaned);
+                }
+
+            }
+
+            void LoadLoaned()
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new JavaScriptDateTimeConverter());
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+
+
+                using (StreamReader file = File.OpenText(@"C:\Users\Simon\Documents\VISUAL STUDIO\FotbollsTestREWORKED\Library\Library\loaneddata.json"))
+                {
+                    loaned = JsonConvert.DeserializeObject<List<Bok>>(File.ReadAllText(@"C:\Users\Simon\Documents\VISUAL STUDIO\FotbollsTestREWORKED\Library\Library\loaneddata.json"));
+                    serializer = new JsonSerializer();
+                    loaned = (List<Bok>)serializer.Deserialize(file, typeof(List<Bok>));
+                }
+
+            }
+
+        
+
     }
 }

@@ -9,6 +9,14 @@ namespace LibraryReworked
 {
     internal class Output
     {
+        
+        public void Printer(Book bok)
+        {
+                Console.WriteLine("---------------------------------------------");
+                Console.WriteLine("Titel: " + bok.Title + " | Författare: " + bok.Author + " | Lånad: " + bok.LoanedStatus);
+                Console.WriteLine("---------------------------------------------");
+        }
+
         public void PrintSearched(List<Book> searchResults)
         {
             int bookCounter = 0;
@@ -20,12 +28,9 @@ namespace LibraryReworked
                 Console.WriteLine("---------------------------------------------");
                 bookCounter++;
             }
-
-            Console.WriteLine("Klicka vart som helst för att återgå till huvudmenyn!");
-            Console.ReadKey();
-
         }
 
+        
 
         public void PrintLoaned(List<Book> loanedBooks)
         {
@@ -34,8 +39,7 @@ namespace LibraryReworked
             if (loanedBooks.Count() < 1)
             {
                 Console.WriteLine("Det finns inga lånade böcker!");
-                Console.WriteLine("Klicka vart som helst för att återgå till huvudmenyn!");
-                Console.ReadKey();
+
             }
             else
             {
@@ -67,11 +71,6 @@ namespace LibraryReworked
                     bookCounter++;
                 }
             }
-
-
-            Console.WriteLine("Klicka vart som helst för att återgå till huvudmenyn!");
-            Console.ReadKey();
-
         }
     }
 }
