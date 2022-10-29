@@ -10,14 +10,14 @@ namespace LibraryReworked
     internal class Output
     {
         
-        public void Printer(Book bok)
+        public void Printer(Book bok) // Skriver ut specifierad objekt Book som argument vid användning av funktion.
         {
                 Console.WriteLine("---------------------------------------------");
                 Console.WriteLine("Titel: " + bok.Title + " | Författare: " + bok.Author + " | Lånad: " + bok.LoanedStatus);
                 Console.WriteLine("---------------------------------------------");
         }
 
-        public void PrintSearched(List<Book> searchResults)
+        public void PrintSearched(List<Book> searchResults) //Skriver ut alla böcker i listan searchresults.  
         {
             int bookCounter = 0;
 
@@ -32,7 +32,7 @@ namespace LibraryReworked
 
         
 
-        public void PrintLoaned(List<Book> loanedBooks)
+        public void PrintLoaned(List<Book> loanedBooks) //Skriver ut alla böcker i listan loanedbooks dvs lånade böcker.
         {
             int bookCounter = 0;
 
@@ -52,7 +52,7 @@ namespace LibraryReworked
                 }
             }
         }
-        public void PrintBooks(List<Book> bookList)
+        public void PrintBooks(List<Book> bookList) //SKriver ut alla objekt book i listan booklist.
         {
             int bookCounter = 0;
 

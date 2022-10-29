@@ -13,23 +13,23 @@ namespace Books
         public string Title { get; set; }
         public string Author { get; set; }
         public bool LoanedStatus { get; set; }
-
+        //här skapar vi templaten för alla böcker som vi kommer att skapa och som finns i biblioteket.
         Output output = new Output();
 
-        public void EditBook()
+        public void EditBook() //redigera böcker som finns i biblioteket (bookList) listan.
         {
-            SearchBooks();
-            output.PrintSearched(Program.searchResults);
+            SearchBooks(); //sök efter bok.
+            output.PrintSearched(Program.searchResults); //skriv ut alla hittade böcker.
 
-            if(Program.searchResults.Count() > 0)
+            if(Program.searchResults.Count() > 0) // om den searchbooks hittar några böcker. > 0
             {
                 
             Console.WriteLine("Vilken bok vill du redigera?");
-            int bookChoice = int.Parse(Console.ReadLine());
+            int bookChoice = int.Parse(Console.ReadLine()); //här behövs det en validator för om inputten som använder ger funkar. om den är utanför index eller inte ens en siffra kraschar den, Kan nog göras med try catch. eller en while loop.
                 
-                        foreach(Book book in Program.bookList)
+                        foreach(Book book in Program.bookList) //kollar om boken som är vald finns i biblioteket (vilket den gör självklart) och sedan tar den den boken och redigeras dess information istället för den i den temporära lista (searchresults)
                 {
-                    if(book.Title == Program.searchResults[bookChoice - 1].Title && book.Author == Program.searchResults[bookChoice - 1].Author)
+                    if(book.Title == Program.searchResults[bookChoice - 1].Title && book.Author == Program.searchResults[bookChoice - 1].Author)  //väljer den boken som sagt ovan.
                     {
                         Console.Clear();
                         Console.WriteLine($"Du valde {book.Title} av {book.Author}");
@@ -38,7 +38,7 @@ namespace Books
                         Console.WriteLine("1 - Titel");
                         Console.WriteLine("2 - Författare");
                         Console.WriteLine("3 - Titel & Författare");
-                        int choice2 = int.Parse(Console.ReadLine());
+                        int choice2 = int.Parse(Console.ReadLine()); //här behövs det också någon form av validator för använders input så dem inte kraschar programmet. lol
                         
                         if(choice2 == 1)
                         {
@@ -74,9 +74,9 @@ namespace Books
             }
         
 
-        public void SearchBooks()
+        public void SearchBooks() //söker efter en bok. kollar igenom alla böcker i booklist och jämför med användarens input.
         {
-            Program.searchResults.Clear();
+            Program.searchResults.Clear(); //rensar temporära listan så den inte sparar alla sökningar
             Console.WriteLine("Ange författaren, eller författarens namn!");
             string svar = Console.ReadLine().ToLower();
 
@@ -84,10 +84,10 @@ namespace Books
                 {
                     if (x.Author.ToLower().Contains(svar) || x.Title.ToLower().Contains(svar))
                     {
-                        Program.searchResults.Add(x);
+                        Program.searchResults.Add(x); //lägger till i searcresults (temporär lista)
                     }
                 }
-            if(Program.searchResults.Count() < 1)
+            if(Program.searchResults.Count() < 1) //om den inte hittar några resultat skriver den ut detta.
             {
                 Console.WriteLine("Inga böcker hittades!");
                 Console.WriteLine("Klicka på vilken knapp som helst för att återgå till huvudmenyn!");
@@ -95,25 +95,25 @@ namespace Books
             }
         }
 
-        void CreateBook(string title, string author)
+        void CreateBook(string title, string author) //för att skapa en ny bok, väldigt enkelt kommando. den tar två argument som kommer från newbook()
         {
             Book newBook = new Book();
             newBook.Title = title;
             newBook.Author = author;
             newBook.LoanedStatus = false;
 
-            Program.bookList.Add(newBook);
+            Program.bookList.Add(newBook); //lägger in den i biblioteket.
         }
-        public void NewBook()
+        public void NewBook() //Frågar användaren frågor angående ny bok, skickar sedan titel och author till createbook för skapelse av nytt objekt.
         {
             Console.Write("Vad heter den nya boken? : ");
             string newTitle = Console.ReadLine();
             Console.Write("\nVad heter författaren? : ");
             string newAuthor = Console.ReadLine();
 
-            CreateBook(newTitle, newAuthor);
+            CreateBook(newTitle, newAuthor); // ^^
         }
-        public void LoanBook()
+        public void LoanBook() //för att låna en bok från biblioteket och lägger in den i loanedbooks listan.
         {
             while (true)
             {
@@ -124,7 +124,7 @@ namespace Books
                 Console.WriteLine("3 - Avbryt");
                 string choice = Console.ReadLine();
 
-                switch (choice)
+                switch (choice) // för att validera inputten.
                 {
                     case "1":
 
@@ -137,7 +137,7 @@ namespace Books
                             {
                                 Program.searchResults.Add(x);
                             }
-                        }
+                        } //egentligen kan detta bytas ut med en direkt metod från searchBooks() men den har extra console writelines och funktioner vilket förstör just här. SearchBooks() funktionen kan skrivas om för att användas globalt.
                         if (Program.searchResults.Count() >= 1)
                         {
                             output.PrintSearched(Program.searchResults);
@@ -145,15 +145,15 @@ namespace Books
                             Console.WriteLine("Skriv den siffran på den boken som du vill välja!");
                             string choice2 = Console.ReadLine();
 
-                            int bookNum;
+                            int bookNum; //validerar om inputten är en siffra, kan förbättras.
                             while (!int.TryParse(choice2, out bookNum))
                             {
                                 Console.WriteLine("Denna bok finns inte!");
                                 choice2 = Console.ReadLine();
                             }
-                            if (bookNum > 0 && bookNum <= Program.searchResults.Count() && Program.searchResults[bookNum-1].LoanedStatus == false)
+                            if (bookNum > 0 && bookNum <= Program.searchResults.Count() && Program.searchResults[bookNum-1].LoanedStatus == false) //kollar om inputten är validerat nummer inom rangen av listan.
                             {
-                                Program.searchResults[bookNum - 1].LoanedStatus = true;
+                                Program.searchResults[bookNum - 1].LoanedStatus = true; //ändrar statusen för boken i fråga.
                                 Console.WriteLine($"Boken {Program.searchResults[bookNum-1].Title} av {Program.searchResults[bookNum-1].Author} är nu utlånad!");
                                 Console.WriteLine("Klicka på vilken knapp som helst för att återgå till huvudmenyn!");
 
@@ -161,8 +161,8 @@ namespace Books
                                 {
                                     if(x.Title == Program.searchResults[bookNum - 1].Title && x.Author == Program.searchResults[bookNum - 1].Author)
                                     {
-                                        x.LoanedStatus = true;
-                                        Program.loanedBooks.Add(x);
+                                        x.LoanedStatus = true; //synkar med boken i stora bibliotekslistan.
+                                        Program.loanedBooks.Add(x); //lägger till boken i dina lånade böcker.
                                     }
                                 }
 
@@ -171,7 +171,7 @@ namespace Books
                             }
                             else
                             {
-                                if(bookNum > 0 && bookNum <= Program.searchResults.Count() && Program.searchResults[bookNum-1].LoanedStatus == true)
+                                if(bookNum > 0 && bookNum <= Program.searchResults.Count() && Program.searchResults[bookNum-1].LoanedStatus == true) //om boken redan är lånad, och inom range. om boken annars är utanför range så skriver den ut att boken inte finns och breakar.
                                 {
                                     Console.WriteLine("Denna bok är redan utlånad!");
                                     Console.WriteLine("Klicka på vilken knapp som helst för att återgå till huvudmenyn!");
@@ -195,20 +195,20 @@ namespace Books
 
                         break;
                     case "2":
-                        output.PrintBooks(Program.bookList);
+                        output.PrintBooks(Program.bookList); //skriver ut alla böcker
                         
                         Console.WriteLine("\nSkriv numret på den bok som du vill låna!");
                         string choice3 = Console.ReadLine();
                         
-                        int bookNum2;
+                        int bookNum2; //välj en av böckerna i listan.
                         
                         while (!int.TryParse(choice3, out bookNum2))
                         {
                             Console.WriteLine("Denna bok finns inte!");
-                            choice3 = Console.ReadLine();
+                            choice3 = Console.ReadLine(); //validerar inputen.
                         }
                             
-                        if (bookNum2 > 0 && bookNum2 <= Program.bookList.Count() && Program.bookList[bookNum2-1].LoanedStatus == false)
+                        if (bookNum2 > 0 && bookNum2 <= Program.bookList.Count() && Program.bookList[bookNum2-1].LoanedStatus == false) //kollar först om den är inom range för listans längd. sedan om den är det ändrar den loanedStatus osv.
                         {
                             Program.bookList[bookNum2 - 1].LoanedStatus = true;
                             Console.WriteLine($"Boken {Program.bookList[bookNum2-1].Title} av {Program.bookList[bookNum2-1].Author} är nu utlånad!");
@@ -217,17 +217,17 @@ namespace Books
                             Console.ReadKey();
                             break;
                         }
-                        else
+                        else //om boken redan är lånad dvs book[x].LoanedStatus == true.
                         {
                             Console.WriteLine("Denna bok är redan utlånad!");
                             Console.WriteLine("Klicka på vilken knapp som helst för att återgå till huvudmenyn!");
                             Console.ReadKey();
                             break;
                         }
-                        case "3":
+                        case "3": // om använder väljer '3', aka avbryter programmet.
                             break;
                         
-                    default:
+                    default: //om inmatningen är ute och cyklar!
                         Console.WriteLine("Felaktig inmatning, försök igen!");
                         break;
                 }
