@@ -26,14 +26,17 @@ namespace LibraryReworked
         public static List<Book> loanedBooks = new List<Book>();
         static void Main(string[] args)
         {
-             void SaveLoaned()
+
+            //Save(); Första gången du startar programmet måste du skriva detta. Detta för att skapa filerna.
+
+            void SaveLoaned()
             {
 
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Converters.Add(new JavaScriptDateTimeConverter());
                 serializer.NullValueHandling = NullValueHandling.Ignore;
 
-                using (StreamWriter sw = new StreamWriter(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\loaneddata.json"))
+                using (StreamWriter sw = new StreamWriter(@"loaneddata.json"))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
                     serializer.Serialize(writer, loanedBooks);
@@ -48,9 +51,9 @@ namespace LibraryReworked
                 serializer.NullValueHandling = NullValueHandling.Ignore;
 
 
-                using (StreamReader file = File.OpenText(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\loaneddata.json"))
+                using (StreamReader file = File.OpenText(@"loaneddata.json"))
                 {
-                    loanedBooks = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\loaneddata.json"));
+                    loanedBooks = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(@"loaneddata.json"));
                     serializer = new JsonSerializer();
                     loanedBooks = (List<Book>)serializer.Deserialize(file, typeof(List<Book>));
                 }
@@ -63,7 +66,7 @@ namespace LibraryReworked
                 serializer.Converters.Add(new JavaScriptDateTimeConverter());
                 serializer.NullValueHandling = NullValueHandling.Ignore;
 
-                using (StreamWriter sw = new StreamWriter(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\librarydata.json"))
+                using (StreamWriter sw = new StreamWriter(@"librarydata.json"))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
                     serializer.Serialize(writer, bookList);
@@ -78,9 +81,9 @@ namespace LibraryReworked
                 serializer.NullValueHandling = NullValueHandling.Ignore;
 
 
-                using (StreamReader file = File.OpenText(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\librarydata.json"))
+                using (StreamReader file = File.OpenText(@"librarydata.json"))
                 {
-                    bookList = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(@"C:\Users\Simon\Source\Repos\LibraryReworked2\LibraryReworked\librarydata.json"));
+                    bookList = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(@"librarydata.json"));
                     serializer = new JsonSerializer();
                     bookList = (List<Book>)serializer.Deserialize(file, typeof(List<Book>));
                 }
